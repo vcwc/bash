@@ -25,11 +25,11 @@ fi
 for f in /vcwc/bin/${VCWC_IMAGE}/* ;
 do
 	folder=$(basename $f)
-	if [[ -d $f && "$folder" != "internal" && "$folder" != "image" ]] ; then
+	if [[ -d $f && "$folder" != "internal" && "$folder" != "bash" ]] ; then
     envName="VCWC_EXECUTIONPLANE_APIEXTERNALPATH_${folder^^}"
-    export "$envName"="/vcwc/bin/${VCWC_TYPE}/$folder:${VCWC_EXECUTIONPLANE_ORIGINALPATH}"
+    export "$envName"="/vcwc/bin/${VCWC_IMAGE}/$folder:${VCWC_EXECUTIONPLANE_ORIGINALPATH}"
     envName="VCWC_EXECUTIONPLANE_APIINTERNALPATH_${folder^^}"
-    export "$envName"="/vcwc/bin/${VCWC_TYPE}/$folder:/vcwc/bin/${VCWC_TYPE}/$folder/internal:/vcwc/bin/${VCWC_TYPE}/internal:$VCWC_EXECUTIONPLANE_ORIGINALPATH"
+    export "$envName"="/vcwc/bin/${VCWC_IMAGE}/$folder:/vcwc/bin/${VCWC_IMAGE}/$folder/internal:/vcwc/bin/${VCWC_IMAGE}/internal:$VCWC_EXECUTIONPLANE_ORIGINALPATH"
 	fi
 done;
 

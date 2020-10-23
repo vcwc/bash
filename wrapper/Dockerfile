@@ -9,6 +9,7 @@ ENV VCWC_ENTRYPOINT "bash"
 WORKDIR /vcwc/pwd
 
 ENV VCWC_REALM=vcwc \
+    VCWC_LIBRARY=bash \
     VCWC_IMAGE=bash \
     VCWC_FLAVOR=wrapper \
     VCWC_TAG=5.0.18 \
