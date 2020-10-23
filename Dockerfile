@@ -1,4 +1,4 @@
-FROM vcwc/bash.wrapper:5.0.18
+FROM vcwc/bash.wrapper
 
 COPY ./ /vcwc/repo/
 
