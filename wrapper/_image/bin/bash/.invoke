@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# .invoke is the external entrypoint into the API
+# The first arguments is the API method
+(
+	pathName="VCWC_EXECUTIONPLANE_APIEXTERNALPATH_${VCWC_NAME^^}"
+  export PATH="${!pathName}"
+	. executionplane-invoke "$0 $@"
+	if [[ "$1" == "--help" ]] ; then
+		if [[ -f /vcwc/help/${VCWC_NAME}/help ]] ; then
+			cat /vcwc/help/${VCWC_NAME}/help | envsubst
+		else
+			executionplane-error "No help available"
+		fi
+	elif [[ ! -f "/vcwc/bin/${VCWC_TYPE}/${VCWC_NAME}/$1" ]] ; then
+		. executionplane-error "$1: Method does not exists!"
+  else
+		if [[ "$2" == "--help" ]] ; then
+				if [[ -f /vcwc/help/${VCWC_NAME}/$1 ]] ; then
+					cat /vcwc/help/${VCWC_NAME}/$1 | envsubst
+				else
+					executionplane-error "No help available"
+				fi
+		else
+			"$@"
+		fi
+  fi
+	. executionplane-complete
+)

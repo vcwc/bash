@@ -1,0 +1,13 @@
+FROM bash:5.0.18
+
+RUN apk update && apk add curl && apk add coreutils && apk add gettext && apk add jq && rm -rf /var/cache/apk/*
+
+LABEL co.vcweb.schema-version="1.0" \
+      co.vcweb.label="vcwc/bash.base Image - External Build" \
+      co.vcweb.description="Bash image with some additional library installs." \
+      co.vcweb.realm="vcwc" \
+      co.vcweb.library="bash" \
+      co.vcweb.image="bash" \
+      co.vcweb.flavor="base" \
+      co.vcweb.tag="5.0.18" \
+      co.vcweb.maintainer="vcwc@vcweb.co"

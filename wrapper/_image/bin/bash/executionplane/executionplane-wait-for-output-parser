@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+test="2"
+while (( $test > 1 ))
+do
+    usleep 500000
+    test=$(ps aux | grep -i /vcwc/bin/bash/executionplane/executionplane-output-parser | wc -l)
+#    echo $test
+    done

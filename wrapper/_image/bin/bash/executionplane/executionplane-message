@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+timestamp=$( to-timestamp )
+action=$1
+shift
+arguments=$( echo "$@" | sed 's/"/\\"/g' | jq -aR . )
+
+printf '{ "origin": "%s", "@timestamp": "%s", "source":"executionplane", "executiontag": "%s", "executionplane": %s, "action": "%s", "arguments": %s}\n' \
+ "$VCWC_IMAGENAME" "$timestamp" "${VCWC_EXECUTIONTAG}" "${VCWC_EXECUTIONPLANE}" "$action" "$arguments"

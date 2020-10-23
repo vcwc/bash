@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+export VCWC_EXECUTIONPLANE_BASEPATH=$PATH
+
+export PATH="/vcwc/bin:/vcwc/bin/bash:/vcwc/bin/bash/executionplane:${VCWC_EXECUTIONPLANE_BASEPATH}"
+export VCWC_EXECUTIONPLANE_ORIGINALPATH=$PATH
+
+export PATH="/vcwc/bin/bash/wrapper:${VCWC_EXECUTIONPLANE_ORIGINALPATH}"
+export VCWC_EXECUTIONPLANE_WRAPPERPATH=$PATH
+
+# set VCWC_HOSTNAME
+if [[ -f /hostfs/etc/hostname ]]; then
+  export VCWC_HOSTNAME="$(< /hostfs/etc/hostname)"
+elif [[ -d /hostfs/etc ]]; then
+  export VCWC_HOSTNAME="host.docker.internal"
+fi
+if [[ "$VCWC_HOSTNAME" == "" ]]; then
+  export VCWC_HOSTNAME="localhost"
+fi
+
+if [[ $VCWC_PREENTRYPOINT != "" ]] ; then
+  . "$VCWC_PREENTRYPOINT"
+fi
+
+# Register APIs
+for f in /vcwc/bin/${VCWC_IMAGE}/* ;
+do
+	folder=$(basename $f)
+	if [[ -d $f && "$folder" != "internal" && "$folder" != "image" ]] ; then
+    envName="VCWC_EXECUTIONPLANE_APIEXTERNALPATH_${folder^^}"
+    export "$envName"="/vcwc/bin/${VCWC_TYPE}/$folder:${VCWC_EXECUTIONPLANE_ORIGINALPATH}"
+    envName="VCWC_EXECUTIONPLANE_APIINTERNALPATH_${folder^^}"
+    export "$envName"="/vcwc/bin/${VCWC_TYPE}/$folder:/vcwc/bin/${VCWC_TYPE}/$folder/internal:/vcwc/bin/${VCWC_TYPE}/internal:$VCWC_EXECUTIONPLANE_ORIGINALPATH"
+	fi
+done;
+
+export VCWC_EXECUTIONPLANE="${VCWC_IMAGENAME}"
+
+if [[ $1 == '--executiontag' ]] ; then
+  export VCWC_EXECUTIONTAG=$2
+  shift
+  shift
+fi
+
+if [[ $1 == "--keepalive"* ]] ; then
+  cycles=$(echo "$1" | cut -d':' -f 2 | cut -d' ' -f 1)
+  export VCWC_EXITPOINT="KEEPALIVE:$cycles"
+  shift
+elif [[ $1 == '--nokeepalive' ]] ; then
+  export VCWC_EXITPOINT=
+  shift
+fi
+
+export PS1='$(pwd)# '
+start=$SECONDS
+
+# image-wrapper status information
+timestamp=$(to-timestamp)
+printf '{ "source":"wrapper", "@timestamp":"%s", "status":"initialising", "entrypoint": "/vcwc/bin/bash/wrapper/run-image %s "}\n' "$timestamp" "'$*'"
+
+# invoke entrypoint if no arguments
+if [ $# -eq 0 ] ; then
+(
+  export PATH=$VCWC_EXECUTIONPLANE_BASEPATH
+  $VCWC_ENTRYPOINT
+)
+# --base switch invokes entrypoint with remaining arguments
+elif [ $1 == '--base' ] ; then
+(
+  export PATH=$VCWC_EXECUTIONPLANE_BASEPATH
+  shift
+  $VCWC_ENTRYPOINT "$@"
+)
+else
+  "$@"
+fi
+
+# emit log and image wrapper info upon termination
+if [[ "$VCWC_EXITPOINT" == "KEEPALIVE"* ]] ; then
+  cycles=$(echo "$VCWC_EXITPOINT" | cut -d':' -f 2)
+  let "iterations = 0$cycles"
+	timestamp=$(to-timestamp)
+	duration=$(( SECONDS - start))
+	start=$SECONDS
+  continue="true"
+	while [[ "true" == "$continue" ]] ;
+	do
+		keepalive=$(( SECONDS - start))
+    printf '{ "source":"wrapper", "@timestamp":"%s", "status":"exiting", "uptime-seconds":"%s", "keepalive-seconds":"%s"}\n' "$timestamp" "$duration" "$keepalive"
+		sleep 5
+    let "iterations = iterations - 1"
+    if (( iterations == 0 )) ; then
+      continue="false"
+    fi
+	done
+else
+	timestamp=$(to-timestamp)
+	duration=$(( SECONDS - start))
+  printf '{ "source":"wrapper", "@timestamp":"%s", "status":"exiting", "uptime-seconds":"%s"}\n' "$timestamp" "$duration"
+	sleep 0.25
+fi
