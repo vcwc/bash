@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # START CONFIGURATION
-export VCWC_DC_GLOBAL_PACKAGE_vcwc="image.wrapper"
-export VCWC_DC_GLOBAL_PACKAGE_TAG="v1.3.0"
-export VCWC_DC_GLOBAL_STACKNAMES="VCWC_dc_image_wrapper"
-export VCWC_DC_GLOBAL_BOOTSTACKS=""
-export VCWC_DC_GLOBAL_RUNSTACKS="VCWC_dc_image_wrapper"
-export VCWC_DC_GLOBAL_VOLUME_LIST=""
+export VWC_DC_GLOBAL_PACKAGE_vcwc="image.wrapper"
+export VWC_DC_GLOBAL_PACKAGE_TAG="v1.3.0"
+export VWC_DC_GLOBAL_STACKNAMES="VWC_dc_image_wrapper"
+export VWC_DC_GLOBAL_BOOTSTACKS=""
+export VWC_DC_GLOBAL_RUNSTACKS="VWC_dc_image_wrapper"
+export VWC_DC_GLOBAL_VOLUME_LIST=""
 # END CONFIGURATION
 
 # START OTHER VARIABLES

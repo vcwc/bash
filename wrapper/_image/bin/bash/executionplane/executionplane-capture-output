@@ -2,5 +2,5 @@
 
 tmpfile=$(mktemp /tmp/executionplane-capture-output.XXXXXX)
 executionplane-output $@ $tmpfile
-export VCWC_EXECUTIONPLANE_OUTPUT=$(cat $tmpfile)
+export VWC_EXECUTIONPLANE_OUTPUT=$(cat $tmpfile)
 rm $tmpfile

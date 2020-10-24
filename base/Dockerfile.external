@@ -1,4 +1,5 @@
-FROM bash:5.0.18
+ARG  VCW_TAG=5.0.18
+FROM vcwc/bash.external:${VCW_TAG}
 
 RUN apk update && apk add curl && apk add coreutils && apk add gettext && apk add jq && rm -rf /var/cache/apk/*
 
@@ -9,5 +10,5 @@ LABEL co.vcweb.schema-version="1.0" \
       co.vcweb.library="bash" \
       co.vcweb.image="bash" \
       co.vcweb.flavor="base" \
-      co.vcweb.tag="5.0.18" \
-      co.vcweb.maintainer="vcwc@vcweb.co"
+      co.vcweb.tag="${VCW_TAG}" \
+      co.vcweb.maintainer="vcw@vcweb.co"

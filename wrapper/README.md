@@ -25,7 +25,7 @@ The `wrapper` library initialises the container and implements a number of comma
 
 It exposes two hooks that can be implemented by any image definition:
 
-* __VCWC_PREENTRYPOINT__  
+* __VWC_PREENTRYPOINT__  
 A script that executes after the `wrapper` PATH has been set but before execution the main part of the `entrypoint`.
 
 * `output-to-JSON`  

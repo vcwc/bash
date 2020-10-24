@@ -10,7 +10,7 @@ The library consists of 3 methods.
 __`entrypoint`__  
 Prepares the different __PATH__ environment variables for the `wrapper`. It sets the appropriate PATH for the `wrapper` execution.
 
-It executes the __VCWC_PREENTRYPOINT__ hook if one has been set.
+It executes the __VWC_PREENTRYPOINT__ hook if one has been set.
 
 Next if prepares the __PATH__ environment variables used by the `invoke` API entry point.
 

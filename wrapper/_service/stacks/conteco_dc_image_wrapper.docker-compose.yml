@@ -4,7 +4,7 @@ services:
 
 # START SERVICE image.wrapper
   image:
-    image: ${VCWC_REGISTRY}${VCWC_REALM_RUNTIME}/vcwc.${VCWC_DC_GLOBAL_IMAGE_NAME} 
+    image: ${VWC_REGISTRY}${VWC_REALM_RUNTIME}/vcwc.${VWC_DC_GLOBAL_IMAGE_NAME} 
     environment: []
     command: ['sleep 0.5']
     volumes: []
@@ -17,9 +17,9 @@ services:
           memory: '128m'
         reservations:
           memory: '5m'
-${VCWC_DC_IMAGE_WRAPPER_COMPOSE_EXTENSIONS}
+${VWC_DC_IMAGE_WRAPPER_COMPOSE_EXTENSIONS}
 # END SERVICE image.wrapper
 
-networks: {${VCWC_DC_GLOBAL_NETWORKS}}
-volumes: {${VCWC_DC_GLOBAL_VOLUMES}}
-${VCWC_DC_GLOBAL_COMPOSE_EXTENSIONS}
+networks: {${VWC_DC_GLOBAL_NETWORKS}}
+volumes: {${VWC_DC_GLOBAL_VOLUMES}}
+${VWC_DC_GLOBAL_COMPOSE_EXTENSIONS}

@@ -3,21 +3,21 @@
 # .invoke is the external entrypoint into the API
 # The first arguments is the API method
 (
-	pathName="VCWC_EXECUTIONPLANE_APIEXTERNALPATH_${VCWC_FLAVOR^^}"
+	pathName="VWC_EXECUTIONPLANE_APIEXTERNALPATH_${VWC_FLAVOR^^}"
   export PATH="${!pathName}"
 	. executionplane-invoke "$0 $@"
 	if [[ "$1" == "--help" ]] ; then
-		if [[ -f /vcwc/help/${VCWC_FLAVOR}/help ]] ; then
-			cat /vcwc/help/${VCWC_FLAVOR}/help | envsubst
+		if [[ -f /vcw/help/${VWC_FLAVOR}/help ]] ; then
+			cat /vcw/help/${VWC_FLAVOR}/help | envsubst
 		else
 			executionplane-error "No help available"
 		fi
-	elif [[ ! -f "/vcwc/bin/${VCWC_IMAGE}/${VCWC_FLAVOR}/$1" ]] ; then
+	elif [[ ! -f "/vcw/bin/${VWC_IMAGE}/${VWC_FLAVOR}/$1" ]] ; then
 		. executionplane-error "$1: Method does not exists!"
   else
 		if [[ "$2" == "--help" ]] ; then
-				if [[ -f /vcwc/help/${VCWC_FLAVOR}/$1 ]] ; then
-					cat /vcwc/help/${VCWC_FLAVOR}/$1 | envsubst
+				if [[ -f /vcw/help/${VWC_FLAVOR}/$1 ]] ; then
+					cat /vcw/help/${VWC_FLAVOR}/$1 | envsubst
 				else
 					executionplane-error "No help available"
 				fi

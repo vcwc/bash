@@ -1,19 +1,20 @@
-FROM vcwc/bash.base:5.0.18 AS base
+ARG  VCW_TAG=5.0.18
+FROM vcwc/bash.base:${VCW_TAG}
 
-ENTRYPOINT ["/vcwc/bin/bash/wrapper/entrypoint"]
+ENTRYPOINT ["/vcw/bin/bash/wrapper/entrypoint"]
 
-COPY ./_image /vcwc/
-RUN chmod -R +x /vcwc/bin
+COPY ./_image /vcw/
+RUN chmod -R +x /vcw/bin
 
-ENV VCWC_ENTRYPOINT "bash"
-WORKDIR /vcwc/pwd
+ENV VWC_ENTRYPOINT "bash"
+WORKDIR /vcw/pwd
 
-ENV VCWC_REALM=vcwc \
-    VCWC_LIBRARY=bash \
-    VCWC_IMAGE=bash \
-    VCWC_FLAVOR=wrapper \
-    VCWC_TAG=5.0.18 \
-    VCWC_IMAGENAME=vcwc/bash.wrapper
+ENV VWC_REALM=vcwc \
+    VWC_LIBRARY=bash \
+    VWC_IMAGE=bash \
+    VWC_FLAVOR=wrapper \
+    VWC_TAG=${VCW_TAG} \
+    VWC_IMAGENAME=vcwc/bash.wrapper
 
 LABEL co.vcweb.schema-version="1.0" \
       co.vcweb.label="vcwc/bash.wrapper Image" \
@@ -22,5 +23,5 @@ LABEL co.vcweb.schema-version="1.0" \
       co.vcweb.library="bash" \
       co.vcweb.image="bash" \
       co.vcweb.flavor="wrapper" \
-      co.vcweb.tag="5.0.18" \
-      co.vcweb.maintainer="vcwc@vcweb.co"
+      co.vcweb.tag="${VCW_TAG}" \
+      co.vcweb.maintainer="vcw@vcweb.co"

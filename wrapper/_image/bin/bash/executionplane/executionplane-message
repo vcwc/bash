@@ -6,4 +6,4 @@ shift
 arguments=$( echo "$@" | sed 's/"/\\"/g' | jq -aR . )
 
 printf '{ "origin": "%s", "@timestamp": "%s", "source":"executionplane", "executiontag": "%s", "executionplane": %s, "action": "%s", "arguments": %s}\n' \
- "$VCWC_IMAGENAME" "$timestamp" "${VCWC_EXECUTIONTAG}" "${VCWC_EXECUTIONPLANE}" "$action" "$arguments"
+ "$VWC_IMAGENAME" "$timestamp" "${VWC_EXECUTIONTAG}" "${VWC_EXECUTIONPLANE}" "$action" "$arguments"
