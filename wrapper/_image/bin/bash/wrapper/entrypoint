@@ -58,21 +58,10 @@ timestamp=$(to-timestamp)
 printf '{ "source":"wrapper", "@timestamp":"%s", "status":"initialising", "entrypoint": "/vcw/bin/bash/wrapper/run-image %s "}\n' "$timestamp" "'$*'"
 
 # invoke entrypoint if no arguments
-if [ $# -eq 0 ] ; then
 (
-  export PATH=$VWC_EXECUTIONPLANE_BASEPATH
-  $VWC_ENTRYPOINT
+export PATH=$VWC_EXECUTIONPLANE_BASEPATH
+$VWC_ENTRYPOINT "$@"
 )
-# --base switch invokes entrypoint with remaining arguments
-elif [ $1 == '--base' ] ; then
-(
-  export PATH=$VWC_EXECUTIONPLANE_BASEPATH
-  shift
-  $VWC_ENTRYPOINT "$@"
-)
-else
-  "$@"
-fi
 
 # emit log and image wrapper info upon termination
 if [[ "$VWC_EXITPOINT" == "KEEPALIVE"* ]] ; then
