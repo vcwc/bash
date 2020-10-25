@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+reqFile="$1"
+resFile="$2"
+
+#request="$(cat $reqFile)"
+#request=$( echo "$request" | jq -sR . )
+
+port="$CONTECO_REST_BASE_PORT"
+if [[ "$port" != "" ]] ; then port=":$port"; fi
+requestHost="${CONTECO_REST_BASE_PROTOCOL}://${CONTECO_REST_BASE_HOST}$port${CONTECO_REST_BASE_URLPREFIX}"
+requestLine="$CONTECO_REST_BASE_REQUESTLINE"
+requestBody=$( echo "$CONTECO_REST_BASE_REQUESTBODY" | jq -sR . )
+
+response=$( cat $resFile | jq -sR . )
+line=$(head -n 1 $resFile)
+responseStatus="$(echo $line | cut -d' ' -f 2 )"
+
+timestamp=$( to-timestamp )
+printf '{ "origin": "%s", "@timestamp": "%s", "source": "rest_api", "level": "COMPLETED", "requestHost":"%s", "requestLine":"%s", "requestBody":%s, "response":%s, "responseStatus":%s }\n' "$CONTECO_IMAGE" "$timestamp" "$requestHost" "$requestLine" "$requestBody" "$response" "$responseStatus"

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+(
+  export PATH="$CONTECO_EXECUTIONPLANE_APIINTERNALPATH_BASE"
+  . executionplane-invoke "$0 $@"
+  reqFile="$1"
+  resFile="$2"
+  protocol="$3"
+  port="$4"
+  if [[ "$protocol" == "" ]] ; then protocol="http"; fi
+  if [[ "$port" != "" ]] ; then port=":$port"; fi
+
+  executionplane-info "CONTECO_STATIC_REST_BASE_API_LOGGING: $CONTECO_STATIC_REST_BASE_API_LOGGING "
+
+  if [[ "$CONTECO_STATIC_REST_BASE_API_LOGGING" == *"REQUEST"* ]] ; then log-request $reqFile; fi
+
+  # PARSE REQUEST FILE AND BUILD CURL COMMAND STRING
+  lineType="requestLine"
+  while IFS= read -r line; do
+    case $lineType in
+      requestLine)
+        requestMethod="-X $(echo $line | cut -d' ' -f 1 )"
+        requestUrl="$(echo $line | cut -d' ' -f 2 )"
+        lineType="hostName"
+  		;;
+      hostName)
+        requestHost="$(echo $line | cut -d' ' -f 2 )"
+        lineType="header"
+  		;;
+      header)
+        if [[ "$line" != "" ]] ; then requestHeaders="$requestHeaders -H ${line// /}";
+      else requestBody=$(mktemp /tmp/curl.requestBody.XXXXXX); touch $requestBody; postData="-d @$requestBody"; lineType="body"; fi
+  		;;
+  		*)
+  			echo $line >> $requestBody
+  		;;
+  	esac
+  done < $reqFile
+
+  if [[ "$CONTECO_STATIC_REST_BASE_API_LOGGING" == *"TRACE"* ]] ; then dumpFile=$(mktemp /tmp/curl.dump.XXXXXX); curlTrace="--trace-ascii $dumpFile"; fi
+
+  executionplane-info "curl -i -sS $curlTrace -o $resFile $requestMethod $requestHeaders $postData $protocol://$requestHost$port$requestUrl"
+
+  start="$(date +%s%N)"
+  executionplane curl -i -sS $curlTrace -o $resFile $requestMethod $requestHeaders $postData $protocol://$requestHost$port$requestUrl
+  stop="$(date +%s%N)"
+
+  if [[ "$CONTECO_STATIC_REST_BASE_API_LOGGING" == *"TRACE"* ]] ; then log-trace $dumpFile; rm $dumpFile; fi
+
+  if [[ "$CONTECO_STATIC_REST_BASE_API_LOGGING" == *"RESPONSE"* ]] ; then log-response $reqFile $resFile $((stop - start)); fi
+
+  executionplane-complete
+)

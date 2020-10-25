@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+(
+  export PATH="$CONTECO_EXECUTIONPLANE_APIINTERNALPATH_BASE"
+  . executionplane-invoke "$0 $@"
+  inputFile="$1"
+  outputFile="$2"
+
+  executionplane-info "CONTECO_STATIC_REST_BASE_API_LOGGING: $CONTECO_STATIC_REST_BASE_API_LOGGING "
+
+  reqFile=$(mktemp /tmp/curl.reqFile.XXXXXX);
+  if [[ "$outputFile" == "" ]] ; then resFile=$(mktemp /tmp/curl.resFile.XXXXXX); else resFile="$outputFile"; fi
+
+  cat $inputFile | envsubst > $reqFile
+  execute-curl $reqFile $resFile ${CONTECO_REST_BASE_PROTOCOL} ${CONTECO_REST_BASE_PORT};
+  if [[ "$CONTECO_STATIC_REST_BASE_API_LOGGING" == *"API"* ]] ; then log-api $reqFile $resFile; fi
+  rm $reqFile; if [[ "$outputFile" == "" ]] ; then rm $resFile; fi
+
+  executionplane-complete
+)

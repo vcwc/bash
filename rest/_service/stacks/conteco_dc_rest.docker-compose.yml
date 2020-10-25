@@ -1,0 +1,26 @@
+---
+version: '3'
+services:
+
+# START SERVICE rest.base
+  rest:
+    image: ${CONTECO_REGISTRY}${CONTECO_REALM_RUNTIME}/conteco.rest.base:v1.0.4 
+    environment: [${CONTECO_DC_REST_ENVIRONMENT}]
+    command: [${CONTECO_DC_REST_COMMAND}]
+    volumes: ['${CONTECO_STACKPREFIX}_bash_data_volume:/conteco/pwd'${CONTECO_DC_REST_VOLUMES_MAPPINGS}]
+    ports: []
+    networks: [${CONTECO_NETWORKLOCAL}_overlay]
+    deploy:
+      mode: ${CONTECO_DC_REST_DEPLOY_MODE}
+      resources:
+        limits:
+          memory: '${CONTECO_DC_REST_DEPLOY_RESOURCES_LIMITS_MEMORY}'
+        reservations:
+          memory: '${CONTECO_DC_REST_DEPLOY_RESOURCES_RESERVATIONS_MEMORY}'
+      restart_policy: { condition: none }
+${CONTECO_DC_REST_COMPOSE_EXTENSIONS}
+# END SERVICE rest.base
+
+networks: {${CONTECO_NETWORKLOCAL}_overlay: { external: true }}
+volumes: {${CONTECO_STACKPREFIX}_bash_data_volume: { external: true }}
+${CONTECO_DC_GLOBAL_COMPOSE_EXTENSIONS}
