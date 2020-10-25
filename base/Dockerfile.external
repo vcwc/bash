@@ -1,5 +1,5 @@
 ARG  VCW_TAG=5.0.18
-FROM vcwc/bash.external:${VCW_TAG}
+FROM bash:${VCW_TAG}
 
 RUN apk update && apk add curl && apk add coreutils && apk add gettext && apk add jq && rm -rf /var/cache/apk/*
 

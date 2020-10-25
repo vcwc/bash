@@ -1,0 +1,3 @@
+boot/shutdown,bash_api,bash_api,bash_api
+start/stop,bash_api,bash_api,bash_api
+

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+
+prefix="package_bash_api_$2"
+
+
+executionplane --silent docker container prune --force
+
+if [[ "package_bash_api_bash_api_bash_api_volume" == "$prefix"* ]] ; then
+		continue="true"
+		while [[ "true" == "$continue" ]] ;
+		do
+			executionplane docker volume rm "package_bash_api_bash_api_bash_api_volume"
+			result=$(docker volume ls | grep "package_bash_api_bash_api_bash_api_volume")
+			if [[ "$result" == "" ]] ; then
+				continue="false"
+			else
+				sleep 3;
+			fi
+		done;
+	fi
+	
+if [[ "package_bash_api_bash_api_bash_data_volume" == "$prefix"* ]] ; then
+		continue="true"
+		while [[ "true" == "$continue" ]] ;
+		do
+			executionplane docker volume rm "package_bash_api_bash_api_bash_data_volume"
+			result=$(docker volume ls | grep "package_bash_api_bash_api_bash_data_volume")
+			if [[ "$result" == "" ]] ; then
+				continue="false"
+			else
+				sleep 3;
+			fi
+		done;
+	fi
+	

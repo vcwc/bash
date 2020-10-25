@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+
+prefix="package_bash_api_$2"
+
+if [[ "package_bash_api_bash_api_bash_api_volume" == "$prefix"* ]] ; then
+	executionplane --silent docker volume create package_bash_api_bash_api_bash_api_volume
+	fi
+	
+if [[ "package_bash_api_bash_api_bash_data_volume" == "$prefix"* ]] ; then
+	executionplane --silent docker volume create package_bash_api_bash_api_bash_data_volume
+	fi
+	
+if [[ "package_bash_api_bash_api_bash_api_volume" == "$prefix"* ]] ; then
+			executionplane --silent docker run -v package_bash_api_bash_api_bash_api_volume:/conteco/bin/bash ${CONTECO_REGISTRY}$1 cp -r /modeco/volumes/bash_api_bash_api_volume/* /conteco/bin/bash
+		fi
+		
+if [[ "package_bash_api_bash_api_bash_data_volume" == "$prefix"* ]] ; then
+			executionplane --silent docker run -v package_bash_api_bash_api_bash_data_volume:/conteco/pwd ${CONTECO_REGISTRY}$1 cp -r /modeco/volumes/bash_api_bash_data_volume/* /conteco/pwd
+		fi
+		

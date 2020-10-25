@@ -1,0 +1,3 @@
+bash_api_bash_api_volume:/conteco/bin/bash
+bash_api_bash_data_volume:/conteco/pwd
+

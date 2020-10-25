@@ -1,0 +1,26 @@
+---
+version: '3'
+services:
+
+# START SERVICE bash.api
+  bash:
+    image: ${CONTECO_REGISTRY}${CONTECO_REALM_RUNTIME}/conteco.bash.api:5.0.18
+    environment: [${BASH_API_ENVIRONMENT}]
+    command: [${BASH_API_COMMAND}]
+    volumes: ['${CONTECO_STACKPREFIX}_bash_api_volume:/conteco/bin/bash','${CONTECO_STACKPREFIX}_bash_data_volume:/conteco/pwd'${BASH_API_VOLUMES_MAPPINGS}]
+    ports: []
+    networks: [${CONTECO_NETWORKLOCAL}_overlay]
+    deploy:
+      mode: ${BASH_API_DEPLOY_MODE}
+      resources:
+        limits:
+          memory: '${BASH_API_DEPLOY_RESOURCES_LIMITS_MEMORY}'
+        reservations:
+          memory: '${BASH_API_DEPLOY_RESOURCES_RESERVATIONS_MEMORY}'
+      restart_policy: { condition: none }
+${BASH_API_COMPOSE_EXTENSIONS}
+# END SERVICE bash.api
+
+networks: {${CONTECO_NETWORKLOCAL}_overlay: { external: true }}
+volumes: {${CONTECO_STACKPREFIX}_bash_api_volume: { external: true },${CONTECO_STACKPREFIX}_bash_data_volume: { external: true }}
+${CONTECO_DC_GLOBAL_COMPOSE_EXTENSIONS}

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+(
+  export PATH="${DOLLAR}CONTECO_EXECUTIONPLANE_APIINTERNALPATH_API"
+  . executionplane-invoke "${DOLLAR}0 ${DOLLAR}@"
+
+  executionplane-info "Hello World!"
+
+  executionplane-complete
+)
