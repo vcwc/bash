@@ -1,3 +1,3 @@
 # `vcwc/bash.api`
 
-Bash image with APOI functionality.  
+Bash image with API functionality.  

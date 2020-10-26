@@ -1,0 +1,25 @@
+---
+version: '3'
+services:
+
+# START SERVICE vcwc/bash/wrapper
+  bash_wrapper:
+    image: ${VCW_REGISTRY}${VCW_STACK_GLOBAL_IMAGE_NAME}:5.0.18
+    environment: []
+    command: ['sleep 0.5']
+    volumes: []
+    ports: []
+    networks: []
+    deploy:
+      mode: replicated
+      resources:
+        limits:
+          memory: '128m'
+        reservations:
+          memory: '5m'
+${VCW_STACK_BASH_WRAPPER_COMPOSE_EXTENSIONS}
+# END SERVICE vcwc/bash/wrapper
+
+networks: {${VCW_STACK_GLOBAL_NETWORKS}}
+volumes: {${VCW_STACK_GLOBAL_VOLUMES}}
+${VCW_STACK_GLOBAL_COMPOSE_EXTENSIONS}

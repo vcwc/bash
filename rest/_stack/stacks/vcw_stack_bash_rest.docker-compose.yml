@@ -1,0 +1,26 @@
+---
+version: '3'
+services:
+
+# START SERVICE vcwc/bash/rest
+  bash_rest:
+    image: ${VCW_REGISTRY}vcwc/bash/base:5.0.18
+    environment: [${VCW_STACK_BASH_REST_ENVIRONMENT}]
+    command: [${VCW_STACK_BASH_REST_COMMAND}]
+    volumes: ['${VCW_STACK_STACKPREFIX}_bash_data_volume:/vcw/pwd'${VCW_STACK_BASH_REST_VOLUMES_MAPPINGS}]
+    ports: []
+    networks: [${VCW_STACK_NETWORKLOCAL}_overlay]
+    deploy:
+      mode: ${VCW_STACK_BASH_REST_DEPLOY_MODE}
+      resources:
+        limits:
+          memory: '${VCW_STACK_BASH_REST_DEPLOY_RESOURCES_LIMITS_MEMORY}'
+        reservations:
+          memory: '${VCW_STACK_BASH_REST_DEPLOY_RESOURCES_RESERVATIONS_MEMORY}'
+      restart_policy: { condition: none }
+${VCW_STACK_BASH_REST_COMPOSE_EXTENSIONS}
+# END SERVICE vcwc/bash/rest
+
+networks: {${VCW_STACK_NETWORKLOCAL}_overlay: { external: true }}
+volumes: {${VCW_STACK_STACKPREFIX}_bash_data_volume: { external: true }}
+${VCW_STACK_GLOBAL_COMPOSE_EXTENSIONS}
