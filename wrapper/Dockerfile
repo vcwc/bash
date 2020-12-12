@@ -6,15 +6,15 @@ ENTRYPOINT ["/vcw/bin/bash/wrapper/entrypoint"]
 COPY ./_image /vcw/
 RUN chmod -R +x /vcw/bin
 
-ENV VWC_ENTRYPOINT "bash"
+ENV VCW_ENTRYPOINT "bash"
 WORKDIR /vcw/pwd
 
-ENV VWC_REALM=vcwc \
-    VWC_LIBRARY=bash \
-    VWC_IMAGE=bash \
-    VWC_FLAVOR=wrapper \
-    VWC_TAG=${VCW_TAG} \
-    VWC_IMAGENAME=vcwc/bash.wrapper
+ENV VCW_REALM=vcwc \
+    VCW_LIBRARY=bash \
+    VCW_IMAGE=bash \
+    VCW_FLAVOR=wrapper \
+    VCW_TAG=${VCW_TAG} \
+    VCW_IMAGENAME=vcwc/bash.wrapper
 
 LABEL co.vcweb.schema-version="1.0" \
       co.vcweb.label="vcwc/bash.wrapper Image" \

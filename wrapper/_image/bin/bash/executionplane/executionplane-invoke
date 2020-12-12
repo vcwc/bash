@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-if [[ "$VWC_EXECUTIONPLANE" == "$invocation" ]] ; then
-    executionplane-message "ERROR" "${VWC_EXECUTIONPLANE}: DIRECT RECURSE INTO SAME EXECUTION PLANE IS BLOCKED - ABORTING EXECUTION. MOST LIKELY CAUSE IS TARGETED API LAYER NOT PRESENT"
+if [[ "$VCW_EXECUTIONPLANE" == "$invocation" ]] ; then
+    executionplane-message "ERROR" "${VCW_EXECUTIONPLANE}: DIRECT RECURSE INTO SAME EXECUTION PLANE IS BLOCKED - ABORTING EXECUTION. MOST LIKELY CAUSE IS TARGETED API LAYER NOT PRESENT"
     exit;
 fi
-invocation="${VWC_IMAGENAME}$@"
-export VWC_EXECUTIONPLANE=$( echo  "$invocation" | jq -aR . )
+invocation="${VCW_IMAGENAME}$@"
+export VCW_EXECUTIONPLANE=$( echo  "$invocation" | jq -aR . )
 
 executionplane-message "INVOKED" ""

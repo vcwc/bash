@@ -4,12 +4,12 @@ FROM vcwc/bash.base:${VCW_TAG}
 COPY ./_image /vcw/
 RUN chmod -R +x /vcw/bin
 
-ENV VWC_REALM=vcwc \
-    VWC_LIBRARY=bash \
-    VWC_IMAGE=bash \
-    VWC_FLAVOR=api \
-    VWC_TAG=${VCW_TAG} \
-    VWC_IMAGENAME=vcwc/bash.apir
+ENV VCW_REALM=vcwc \
+    VCW_LIBRARY=bash \
+    VCW_IMAGE=bash \
+    VCW_FLAVOR=api \
+    VCW_TAG=${VCW_TAG} \
+    VCW_IMAGENAME=vcwc/bash.apir
 
 LABEL co.vcweb.schema-version="1.0" \
       co.vcweb.label="vcwc/bash.api Image" \

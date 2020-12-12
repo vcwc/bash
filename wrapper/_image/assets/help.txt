@@ -4,7 +4,7 @@ See vcwebio/vcwc.docs.overview for more information on the vcwc ecosystem.
 --------------------------------------------------------------------------------------------
 
 Executing the run command on this container image.
-Usage: docker run [OPTIONS] ${VWC_REALM}/${VWC_ECOSYSTEM}.${VWC_IMAGENAME}:${VWC_TAG} [ARGUMENTS]
+Usage: docker run [OPTIONS] ${VCW_REALM}/${VCW_ECOSYSTEM}.${VCW_IMAGENAME}:${VCW_TAG} [ARGUMENTS]
 
 [OPTIONS]:
     Map a volume when extracting assets from the container image.
@@ -18,7 +18,7 @@ Usage: docker run [OPTIONS] ${VWC_REALM}/${VWC_ECOSYSTEM}.${VWC_IMAGENAME}:${VWC
     The following switches are available:
 
     --extract       Extract the project repository embedded in the container image to host volume folder in
-                    ${VWC_REALM}/${VWC_ECOSYSTEM}.${VWC_IMAGENAME} (internal path)
+                    ${VCW_REALM}/${VCW_ECOSYSTEM}.${VCW_IMAGENAME} (internal path)
 
     --base          Invokes the entrypoint of the base container and passes the remaining arguments to process
 

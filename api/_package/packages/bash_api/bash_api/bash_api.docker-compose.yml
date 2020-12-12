@@ -9,7 +9,7 @@ services:
     command: [${BASH_API_COMMAND}]
     volumes: ['${CONTECO_STACKPREFIX}_bash_api_volume:/conteco/bin/bash','${CONTECO_STACKPREFIX}_bash_data_volume:/conteco/pwd'${BASH_API_VOLUMES_MAPPINGS}]
     ports: []
-    networks: [${CONTECO_NETWORKLOCAL}_overlay]
+    networks: [${VCW_STACK_GLOBAL_NETWORKLOCAL}_overlay]
     deploy:
       mode: ${BASH_API_DEPLOY_MODE}
       resources:
@@ -21,6 +21,6 @@ services:
 ${BASH_API_COMPOSE_EXTENSIONS}
 # END SERVICE bash.api
 
-networks: {${CONTECO_NETWORKLOCAL}_overlay: { external: true }}
+networks: {${VCW_STACK_GLOBAL_NETWORKLOCAL}_overlay: { external: true }}
 volumes: {${CONTECO_STACKPREFIX}_bash_api_volume: { external: true },${CONTECO_STACKPREFIX}_bash_data_volume: { external: true }}
 ${CONTECO_DC_GLOBAL_COMPOSE_EXTENSIONS}

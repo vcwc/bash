@@ -13,7 +13,7 @@ It is used for functionality where there is no control over the output.
 It uses `executionplane-output-parser-stderr`, `executionplane-output-parser-stdout` and `executionplane-wait-for-output-parser`.
 
 __`executionplane-capture-output`__ [command] [arguments]  
-Execution of a method plus arguments with the output captured and stored into the environment variable VWC_EXECUTIONPLANE_OUTPUT.
+Execution of a method plus arguments with the output captured and stored into the environment variable VCW_EXECUTIONPLANE_OUTPUT.
 
 __`executionplane-complete`__ [message]  
 Shorthand for execution of `executionplane-message` with type _COMPLETED_.

@@ -1,52 +1,52 @@
 #!/usr/bin/env bash
-export VWC_EXECUTIONPLANE_BASEPATH=$PATH
+export VCW_EXECUTIONPLANE_BASEPATH=$PATH
 
-export PATH="/vcw/bin:/vcw/bin/bash:/vcw/bin/bash/executionplane:${VWC_EXECUTIONPLANE_BASEPATH}"
-export VWC_EXECUTIONPLANE_ORIGINALPATH=$PATH
+export PATH="/vcw/bin:/vcw/bin/bash:/vcw/bin/bash/executionplane:${VCW_EXECUTIONPLANE_BASEPATH}"
+export VCW_EXECUTIONPLANE_ORIGINALPATH=$PATH
 
-export PATH="/vcw/bin/bash/wrapper:${VWC_EXECUTIONPLANE_ORIGINALPATH}"
-export VWC_EXECUTIONPLANE_WRAPPERPATH=$PATH
+export PATH="/vcw/bin/bash/wrapper:${VCW_EXECUTIONPLANE_ORIGINALPATH}"
+export VCW_EXECUTIONPLANE_WRAPPERPATH=$PATH
 
-# set VWC_HOSTNAME
+# set VCW_HOSTNAME
 if [[ -f /hostfs/etc/hostname ]]; then
-  export VWC_HOSTNAME="$(< /hostfs/etc/hostname)"
+  export VCW_HOSTNAME="$(< /hostfs/etc/hostname)"
 elif [[ -d /hostfs/etc ]]; then
-  export VWC_HOSTNAME="host.docker.internal"
+  export VCW_HOSTNAME="host.docker.internal"
 fi
-if [[ "$VWC_HOSTNAME" == "" ]]; then
-  export VWC_HOSTNAME="localhost"
+if [[ "$VCW_HOSTNAME" == "" ]]; then
+  export VCW_HOSTNAME="localhost"
 fi
 
-if [[ $VWC_PREENTRYPOINT != "" ]] ; then
-  . "$VWC_PREENTRYPOINT"
+if [[ $VCW_PREENTRYPOINT != "" ]] ; then
+  . "$VCW_PREENTRYPOINT"
 fi
 
 # Register APIs
-for f in /vcw/bin/${VWC_IMAGE}/* ;
+for f in /vcw/bin/${VCW_IMAGE}/* ;
 do
 	folder=$(basename $f)
 	if [[ -d $f && "$folder" != "internal" && "$folder" != "bash" ]] ; then
-    envName="VWC_EXECUTIONPLANE_APIEXTERNALPATH_${folder^^}"
-    export "$envName"="/vcw/bin/${VWC_IMAGE}/$folder:${VWC_EXECUTIONPLANE_ORIGINALPATH}"
-    envName="VWC_EXECUTIONPLANE_APIINTERNALPATH_${folder^^}"
-    export "$envName"="/vcw/bin/${VWC_IMAGE}/$folder:/vcw/bin/${VWC_IMAGE}/$folder/internal:/vcw/bin/${VWC_IMAGE}/internal:$VWC_EXECUTIONPLANE_ORIGINALPATH"
+    envName="VCW_EXECUTIONPLANE_APIEXTERNALPATH_${folder^^}"
+    export "$envName"="/vcw/bin/${VCW_IMAGE}/$folder:${VCW_EXECUTIONPLANE_ORIGINALPATH}"
+    envName="VCW_EXECUTIONPLANE_APIINTERNALPATH_${folder^^}"
+    export "$envName"="/vcw/bin/${VCW_IMAGE}/$folder:/vcw/bin/${VCW_IMAGE}/$folder/internal:/vcw/bin/${VCW_IMAGE}/internal:$VCW_EXECUTIONPLANE_ORIGINALPATH"
 	fi
 done;
 
-export VWC_EXECUTIONPLANE="${VWC_IMAGENAME}"
+export VCW_EXECUTIONPLANE="${VCW_IMAGENAME}"
 
 if [[ $1 == '--executiontag' ]] ; then
-  export VWC_EXECUTIONTAG=$2
+  export VCW_EXECUTIONTAG=$2
   shift
   shift
 fi
 
 if [[ $1 == "--keepalive"* ]] ; then
   cycles=$(echo "$1" | cut -d':' -f 2 | cut -d' ' -f 1)
-  export VWC_EXITPOINT="KEEPALIVE:$cycles"
+  export VCW_EXITPOINT="KEEPALIVE:$cycles"
   shift
 elif [[ $1 == '--nokeepalive' ]] ; then
-  export VWC_EXITPOINT=
+  export VCW_EXITPOINT=
   shift
 fi
 
@@ -55,17 +55,17 @@ start=$SECONDS
 
 # image-wrapper status information
 timestamp=$(to-timestamp)
-printf '{ "source":"wrapper", "@timestamp":"%s", "status":"initialising", "entrypoint": "/vcw/bin/bash/wrapper/run-image %s "}\n' "$timestamp" "'$*'"
+printf '{ "source":"wrapper", "@timestamp":"%s", "status":"initialising", "entrypoint": "%s"}\n' "$timestamp" "'$*'"
 
 # invoke entrypoint if no arguments
 (
-export PATH=$VWC_EXECUTIONPLANE_BASEPATH
-$VWC_ENTRYPOINT "$@"
+export PATH=$VCW_EXECUTIONPLANE_BASEPATH
+$VCW_ENTRYPOINT "$@"
 )
 
 # emit log and image wrapper info upon termination
-if [[ "$VWC_EXITPOINT" == "KEEPALIVE"* ]] ; then
-  cycles=$(echo "$VWC_EXITPOINT" | cut -d':' -f 2)
+if [[ "$VCW_EXITPOINT" == "KEEPALIVE"* ]] ; then
+  cycles=$(echo "$VCW_EXITPOINT" | cut -d':' -f 2)
   let "iterations = 0$cycles"
 	timestamp=$(to-timestamp)
 	duration=$(( SECONDS - start))
